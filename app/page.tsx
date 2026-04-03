@@ -56,19 +56,19 @@ function HubNetworkBg() {
             className="hub-line-bg"
             x1={x1} y1={y1} x2={x2} y2={y2}
             stroke="white"
-            strokeOpacity={0.05}
-            strokeWidth={0.8}
+            strokeOpacity={0.18}
+            strokeWidth={1.2}
           />
         ))}
 
         {/* Small buyer nodes — barely visible white dots */}
         {buyers.map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={1.5} fill="white" fillOpacity={0.08} />
+          <circle key={i} cx={cx} cy={cy} r={1.5} fill="white" fillOpacity={0.25} />
         ))}
 
         {/* Hub nodes — subtle orange */}
         {hubs.map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={3} fill="#E8601C" fillOpacity={0.15} />
+          <circle key={i} cx={cx} cy={cy} r={4} fill="#E8601C" fillOpacity={0.45} />
         ))}
       </svg>
     </div>

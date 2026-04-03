@@ -29,16 +29,16 @@ html {
 
 /* Hub background — subtle slow drift */
 @keyframes hub-drift {
-  0%, 100% { opacity: 0.18; transform: translateY(0px); }
-  50% { opacity: 0.22; transform: translateY(-6px); }
+  0%, 100% { opacity: 0.45; transform: translateY(0px); }
+  50% { opacity: 0.55; transform: translateY(-6px); }
 }
 @keyframes hub-drift-delay {
-  0%, 100% { opacity: 0.14; transform: translateY(0px); }
-  50% { opacity: 0.18; transform: translateY(-4px); }
+  0%, 100% { opacity: 0.38; transform: translateY(0px); }
+  50% { opacity: 0.48; transform: translateY(-4px); }
 }
 @keyframes line-fade {
-  0%, 100% { stroke-opacity: 0.06; }
-  50% { stroke-opacity: 0.10; }
+  0%, 100% { stroke-opacity: 0.18; }
+  50% { stroke-opacity: 0.28; }
 }
 
 .hub-bg-svg {

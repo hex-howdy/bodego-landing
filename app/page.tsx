@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MapPin, Menu, X } from "lucide-react";
 import HubCalculator from "@/components/HubCalculator";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 /* ───────────────────────── Logo ───────────────────────── */
 function Logo({ dark = false }: { dark?: boolean }) {
@@ -15,61 +16,6 @@ function Logo({ dark = false }: { dark?: boolean }) {
         Bode<span className="italic text-orange">GO</span>
       </span>
     </a>
-  );
-}
-
-/* ──────────────────── Hub Network Background ─────────────────── */
-function HubNetworkBg() {
-  const hubs: [number, number][] = [
-    [60, 80], [280, 50], [520, 140], [780, 60], [1050, 100], [1180, 200],
-    [150, 300], [400, 260], [650, 350], [900, 240], [1100, 380],
-    [80, 500], [320, 480], [580, 560], [850, 480], [1150, 540],
-  ];
-  const buyers: [number, number][] = [
-    [180, 30], [450, 20], [700, 45], [950, 30], [1100, 70],
-    [30, 180], [200, 150], [370, 100], [600, 200], [820, 140], [1000, 180], [1160, 130],
-    [110, 380], [260, 340], [490, 410], [730, 300], [980, 360], [1140, 300],
-    [40, 580], [220, 550], [460, 610], [700, 650], [920, 590], [1080, 650], [1200, 580],
-    [350, 220], [820, 420], [560, 480], [1020, 500],
-  ];
-  // Connect hubs to nearby buyers (distance < 200)
-  const lines: [number, number, number, number][] = [];
-  for (const [hx, hy] of hubs) {
-    for (const [bx, by] of buyers) {
-      const d = Math.sqrt((hx - bx) ** 2 + (hy - by) ** 2);
-      if (d < 200) lines.push([hx, hy, bx, by]);
-    }
-  }
-
-  return (
-    <svg
-      viewBox="0 0 1200 700"
-      className="hub-bg-svg absolute inset-0 h-full w-full"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-        {/* Connection lines — very faint */}
-        {lines.map(([x1, y1, x2, y2], i) => (
-          <line
-            key={i}
-            className="hub-line-bg"
-            x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="white"
-            strokeOpacity={0.18}
-            strokeWidth={1.2}
-          />
-        ))}
-
-        {/* Small buyer nodes — barely visible white dots */}
-        {buyers.map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={1.5} fill="white" fillOpacity={0.25} />
-        ))}
-
-        {/* Hub nodes — subtle orange */}
-        {hubs.map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={4} fill="#E8601C" fillOpacity={0.45} />
-        ))}
-      </svg>
   );
 }
 
@@ -115,7 +61,6 @@ export default function Home() {
   const [navScrolled, setNavScrolled] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
-  const bgLayerRef = useRef<HTMLDivElement>(null);
   const midLayerRef = useRef<HTMLDivElement>(null);
   const frontLayerRef = useRef<HTMLDivElement>(null);
 
@@ -132,9 +77,6 @@ export default function Home() {
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-      if (bgLayerRef.current) {
-        bgLayerRef.current.style.transform = `translate(${x * -18}px, ${y * -12}px)`;
-      }
       if (midLayerRef.current) {
         midLayerRef.current.style.transform = `translate(${x * 10}px, ${y * 7}px)`;
       }
@@ -145,7 +87,6 @@ export default function Home() {
     };
 
     const handleMouseLeave = () => {
-      if (bgLayerRef.current) bgLayerRef.current.style.transform = 'translate(0px, 0px)';
       if (midLayerRef.current) midLayerRef.current.style.transform = 'translate(0px, 0px)';
       if (frontLayerRef.current) frontLayerRef.current.style.transform = 'translate(0px, 0px) rotateX(0deg) rotateY(0deg)';
     };
@@ -162,12 +103,6 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setNavScrolled(window.scrollY > 80);
-
-      // Parallax on hero bg
-      const heroBg = document.querySelector('.hub-bg-svg') as HTMLElement;
-      if (heroBg) {
-        heroBg.style.transform = `translateY(${window.scrollY * 0.1}px)`;
-      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -267,9 +202,30 @@ export default function Home() {
 
       {/* ═══════════════════ SECTION 1: HERO ═══════════════════ */}
       <section ref={heroRef} className="relative min-h-screen overflow-hidden bg-dark-navy px-6 pt-24 pb-16">
-        {/* Layer 1: Background network — moves opposite, slowest */}
-        <div ref={bgLayerRef} className="parallax-layer hero-bg-layer">
-          <HubNetworkBg />
+        {/* Layer 1: Animated particle network */}
+        <div className="absolute inset-0 w-full h-full">
+          <SparklesCore
+            id="hero-sparkles"
+            background="transparent"
+            minSize={0.6}
+            maxSize={1.8}
+            particlesNumber={100}
+            particleColor="#E8601C"
+            speed={0.5}
+            className="w-full h-full"
+          />
+        </div>
+        <div className="absolute inset-0 w-full h-full opacity-40">
+          <SparklesCore
+            id="hero-sparkles-white"
+            background="transparent"
+            minSize={0.4}
+            maxSize={1.2}
+            particlesNumber={50}
+            particleColor="#ffffff"
+            speed={0.3}
+            className="w-full h-full"
+          />
         </div>
 
         <div className="relative z-10 flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center">

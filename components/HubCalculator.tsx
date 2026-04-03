@@ -59,6 +59,8 @@ export default function HubCalculator() {
   const totalCosts = rent.cost + staff.cost + materials + utilities;
 
   const netIncome = grossRevenue - totalCosts;
+  const netMonthly = netIncome;
+  const annualIncome = netMonthly * 12;
   const margin = grossRevenue > 0 ? (netIncome / grossRevenue) * 100 : 0;
 
   const packerUtilization = Math.round(
@@ -66,7 +68,9 @@ export default function HubCalculator() {
   );
 
   /* ── Recommendations ── */
-  const recommendations: string[] = [];
+  const recommendations: string[] = [
+    "🏠 You provide the space. BodeGO brings the sellers, tech, SOPs, and courier partnerships. Your cost: operations. Their cost: everything else.",
+  ];
 
   if (netIncome < 0) {
     const breakEvenOrders = Math.ceil(totalCosts / 12 / operatingDays);
@@ -108,9 +112,7 @@ export default function HubCalculator() {
     );
   }
 
-  recommendations.push(
-    "💳 BodeGO provides: tech platform, SOPs, seller demand pipeline, and courier partnerships."
-  );
+  // Removed — covered by the first-position insight above
 
   return (
     <div className="rounded-2xl bg-[#0F2645] p-6 sm:p-8">
@@ -119,7 +121,7 @@ export default function HubCalculator() {
         Hub Partner Income Calculator
       </p>
       <h3 className="mt-2 text-2xl font-black text-white">
-        How much can your hub earn?
+        Turn your idle space into ₱{annualIncome > 0 ? Math.round(annualIncome).toLocaleString("en-PH") : "0"}/year.
       </h3>
       <p className="mt-1 text-sm text-[#A0A8B8]">
         Based on real BodeGO unit economics. Adjust the sliders to match your
@@ -202,8 +204,28 @@ export default function HubCalculator() {
         </div>
       </div>
 
+      {/* ── Annual Income Projection — hero card ── */}
+      <div className="mt-8 rounded-xl bg-white/5 p-5">
+        <p className="text-xs text-[#A0A8B8]">Annual Income Projection</p>
+        <p
+          className={`mt-1 font-mono text-3xl font-black transition-all duration-300 ${
+            annualIncome > 0 ? "text-orange" : annualIncome === 0 ? "text-orange" : "text-red-400"
+          }`}
+        >
+          {annualIncome >= 0
+            ? formatPeso(annualIncome)
+            : `-${formatPeso(Math.abs(annualIncome))}`}
+        </p>
+        <p className="mt-0.5 text-[10px] text-[#A0A8B8]">
+          Projected yearly net income
+        </p>
+        <p className="mt-1 text-[10px] text-[#A0A8B8]/60">
+          <span className="text-green-400">↑</span> vs. ₱0/mo if this space sits idle
+        </p>
+      </div>
+
       {/* ── Results grid — 5 cards ── */}
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {/* Card 1 — Monthly Parcels */}
         <div className="rounded-xl bg-white/5 p-4">
           <p className="text-xs text-[#A0A8B8]">Monthly Parcels</p>
@@ -356,9 +378,14 @@ export default function HubCalculator() {
       {/* CTA */}
       <a
         href="#waitlist"
-        className="mt-4 inline-block rounded-full border-2 border-orange px-6 py-3 text-sm font-semibold text-orange transition-colors hover:bg-orange hover:text-white"
+        className="mt-4 inline-flex flex-col items-center rounded-full border-2 border-orange px-6 py-3 text-center transition-colors hover:bg-orange hover:text-white"
       >
-        Apply as Hub Partner &rarr;
+        <span className="text-sm font-semibold text-orange group-hover:text-white">
+          Apply for a Hub Partner Slot &rarr;
+        </span>
+        <span className="mt-0.5 text-[10px] text-[#A0A8B8]">
+          Only 3 hub partners in the alpha phase. Central Luzon only.
+        </span>
       </a>
     </div>
   );

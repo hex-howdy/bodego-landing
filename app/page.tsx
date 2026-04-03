@@ -20,6 +20,27 @@ function Logo({ dark = false }: { dark?: boolean }) {
 
 /* ──────────────────── Hub Network Background ─────────────────── */
 function HubNetworkBg() {
+  const hubs: [number, number][] = [
+    [60, 80], [280, 50], [520, 140], [780, 60], [1050, 100], [1180, 200],
+    [150, 300], [400, 260], [650, 350], [900, 240], [1100, 380],
+    [80, 500], [320, 480], [580, 560], [850, 480], [1150, 540],
+  ];
+  const buyers: [number, number][] = [
+    [180, 30], [450, 20], [700, 45], [950, 30], [1100, 70],
+    [30, 180], [200, 150], [370, 100], [600, 200], [820, 140], [1000, 180], [1160, 130],
+    [110, 380], [260, 340], [490, 410], [730, 300], [980, 360], [1140, 300],
+    [40, 580], [220, 550], [460, 610], [700, 650], [920, 590], [1080, 650], [1200, 580],
+    [350, 220], [820, 420], [560, 480], [1020, 500],
+  ];
+  // Connect hubs to nearby buyers (distance < 200)
+  const lines: [number, number, number, number][] = [];
+  for (const [hx, hy] of hubs) {
+    for (const [bx, by] of buyers) {
+      const d = Math.sqrt((hx - bx) ** 2 + (hy - by) ** 2);
+      if (d < 200) lines.push([hx, hy, bx, by]);
+    }
+  }
+
   return (
     <div className="hero-bg-layer">
       <svg
@@ -29,39 +50,25 @@ function HubNetworkBg() {
         aria-hidden="true"
       >
         {/* Connection lines — very faint */}
-        {[
-          [180, 160, 400, 120], [400, 120, 650, 200], [650, 200, 850, 100],
-          [850, 100, 1050, 180], [180, 160, 300, 380], [400, 120, 520, 300],
-          [650, 200, 700, 420], [850, 100, 900, 320], [1050, 180, 1000, 400],
-          [300, 380, 520, 300], [520, 300, 700, 420], [700, 420, 900, 320],
-          [900, 320, 1000, 400], [180, 160, 80, 300], [1050, 180, 1150, 320],
-          [100, 500, 300, 380], [300, 380, 100, 500], [1000, 400, 1150, 520],
-        ].map(([x1, y1, x2, y2], i) => (
+        {lines.map(([x1, y1, x2, y2], i) => (
           <line
             key={i}
             className="hub-line-bg"
             x1={x1} y1={y1} x2={x2} y2={y2}
             stroke="white"
-            strokeOpacity={0.07}
-            strokeWidth={1}
+            strokeOpacity={0.05}
+            strokeWidth={0.8}
           />
         ))}
 
-        {/* Small buyer nodes — very faint white dots */}
-        {[
-          [80, 100], [260, 60], [480, 50], [720, 80], [950, 50], [1150, 120],
-          [60, 400], [180, 520], [420, 480], [600, 550], [800, 500], [1050, 540],
-          [1180, 420], [340, 200], [560, 380], [760, 280], [1000, 260],
-        ].map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={3} fill="white" fillOpacity={0.12} />
+        {/* Small buyer nodes — barely visible white dots */}
+        {buyers.map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r={1.5} fill="white" fillOpacity={0.08} />
         ))}
 
-        {/* Hub nodes — slightly brighter orange, still very subtle */}
-        {[
-          [180, 160], [400, 120], [650, 200], [850, 100], [1050, 180],
-          [300, 380], [520, 300], [700, 420], [900, 320], [1000, 400],
-        ].map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r={5} fill="#E8601C" fillOpacity={0.25} />
+        {/* Hub nodes — subtle orange */}
+        {hubs.map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r={3} fill="#E8601C" fillOpacity={0.15} />
         ))}
       </svg>
     </div>
@@ -117,7 +124,7 @@ export default function Home() {
       // Parallax on hero bg
       const heroBg = document.querySelector('.hub-bg-svg') as HTMLElement;
       if (heroBg) {
-        heroBg.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+        heroBg.style.transform = `translateY(${window.scrollY * 0.1}px)`;
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });

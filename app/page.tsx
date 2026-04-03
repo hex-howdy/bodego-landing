@@ -95,24 +95,24 @@ function DashboardMockup() {
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-navy/80 p-4">
           <p className="text-xs text-muted">Wallet Balance</p>
-          <p className="font-mono text-xl font-medium text-orange">&#8369;24,500</p>
+          <p className="font-mono text-xl font-medium text-orange">&#8369;48,500</p>
         </div>
         <div className="rounded-lg bg-navy/80 p-4">
           <p className="text-xs text-muted">Today&apos;s Orders</p>
-          <p className="font-mono text-xl font-medium text-white">147</p>
+          <p className="font-mono text-xl font-medium text-white">347</p>
         </div>
         <div className="rounded-lg bg-navy/80 p-4">
           <p className="text-xs text-muted">Delivered</p>
-          <p className="font-mono text-xl font-medium text-green-400">134</p>
+          <p className="font-mono text-xl font-medium text-green-400">312</p>
         </div>
         <div className="rounded-lg bg-navy/80 p-4">
           <p className="text-xs text-muted">In-transit</p>
-          <p className="font-mono text-xl font-medium text-yellow-300">13</p>
+          <p className="font-mono text-xl font-medium text-yellow-300">35</p>
         </div>
       </div>
       <div className="mt-3 rounded-lg bg-navy/80 p-4">
         <p className="text-xs text-muted">Avg Delivery Time</p>
-        <p className="font-mono text-2xl font-medium text-white">1.2 <span className="text-sm text-muted">days</span></p>
+        <p className="font-mono text-2xl font-medium text-white">1.1 <span className="text-sm text-muted">days</span></p>
       </div>
     </div>
   );
@@ -233,8 +233,8 @@ export default function Home() {
             From Anywhere.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-            BodeGO puts your inventory 5km from your buyers — not 100km away in a Manila
-            warehouse. Provincial sellers now compete on speed.
+            BodeGO is built for scaling Philippine sellers — ₱1M–3M/month and growing.
+            You&apos;re packing 100–600 orders a day. That&apos;s your problem. We solve it.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
@@ -251,8 +251,8 @@ export default function Home() {
             </a>
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted">
-            <span>&#10003; No subscription</span>
-            <span>&#10003; Pay per order</span>
+            <span>&#10003; Built for ₱1M+ sellers</span>
+            <span>&#10003; Pay per order fulfilled</span>
             <span>&#10003; Launching Central Luzon 2026</span>
           </div>
         </div>
@@ -272,7 +272,7 @@ export default function Home() {
               {
                 icon: "📦",
                 title: "You pack. They fulfill.",
-                desc: "Scaling sellers spend 3-4 hours daily packing orders. That\u2019s time stolen from sourcing, marketing, and growth.",
+                desc: "You\u2019re packing 100\u2013600 orders a day. That\u2019s a full operations team just doing fulfillment \u2014 time stolen from sourcing, marketing, and growth.",
               },
               {
                 icon: "🚚",
@@ -398,8 +398,8 @@ export default function Home() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { value: "₱1.1T", label: "PH e-commerce GMV (2024)", sub: "+20% annually" },
-              { value: "1.24M", label: "MSMEs in the Philippines", sub: "Most fulfilling from bedrooms" },
-              { value: "₱32K/mo", label: "Avg savings for Tier 1 seller", sub: "vs distant warehouse at ₱100/L fuel" },
+              { value: "300–600", label: "Orders/day for Tier 2 sellers", sub: "BodeGO\u2019s sweet spot" },
+              { value: "₱436K/mo", label: "Avg savings for Tier 2 seller", sub: "vs Metro Manila warehouse at ₱100/L" },
               { value: "<500ms", label: "Order routing time", sub: "Per order, every order" },
             ].map((stat) => (
               <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
@@ -410,7 +410,7 @@ export default function Home() {
             ))}
           </div>
           <p className="mt-8 text-center text-xs text-muted">
-            Savings based on 150 orders/day seller at &#8369;100/L fuel scenario. See full
+            Savings based on Tier 2 seller (450 orders/day) at &#8369;100/L fuel scenario. See full
             methodology in BodeGO Research Hub.
           </p>
         </div>
@@ -422,15 +422,16 @@ export default function Home() {
           <div>
             <p className="text-sm font-semibold tracking-widest text-orange uppercase">For Sellers</p>
             <h2 className="mt-4 text-3xl font-black text-dark-navy md:text-4xl">
-              Stop packing. Start scaling.
+              Stop packing 300 orders a day. Start scaling.
             </h2>
             <ul className="mt-8 space-y-4">
               {[
+                "Built for 100–600 order/day sellers — Tier 1 and Tier 2",
                 "Ship same-day from Central Luzon to Manila buyers",
-                "Rank higher on TikTok Shop and Shopee (platform algorithm rewards speed)",
+                "Rank higher on TikTok Shop and Shopee — platforms reward fast shippers",
                 "Never stockout mid-sale — AI reorder alerts before you run dry",
-                "No monthly subscription — pay only per order fulfilled",
-                "COD and escrow both supported",
+                "No monthly subscription — pay ₱12/parcel fulfilled",
+                "One Tier 2 seller (450 orders/day) fills an entire hub",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-3">
                   <span className="mt-0.5 text-green-500">&#10003;</span>

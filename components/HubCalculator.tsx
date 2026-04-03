@@ -19,35 +19,34 @@ type StatusTier = {
 };
 
 function getStatusTier(dailyOrders: number): StatusTier {
-  if (dailyOrders < 120)
+  if (dailyOrders < 200)
     return {
       color: "text-red-400",
       bg: "bg-red-400/10 border-red-400/30",
-      message: "Below break-even. Need at least 120 orders/day to cover costs.",
-    };
-  if (dailyOrders <= 200)
-    return {
-      color: "text-yellow-400",
-      bg: "bg-yellow-400/10 border-yellow-400/30",
-      message: "Near break-even. Covering costs, thin profit margin.",
+      message: "Below Tier 1 minimum. BodeGO is built for 100+ orders/day sellers.",
     };
   if (dailyOrders <= 300)
     return {
       color: "text-blue-400",
       bg: "bg-blue-400/10 border-blue-400/30",
-      message: "Profitable zone. This is a working hub.",
+      message: "Tier 1 — Scaling Seller. This is BodeGO\u2019s core target.",
     };
   if (dailyOrders <= 500)
     return {
       color: "text-green-400",
       bg: "bg-green-400/10 border-green-400/30",
-      message:
-        "Sweet spot. Strong returns. One Tier 2 seller fills this entire range.",
+      message: "Tier 1–2 overlap. Strong hub. One seller fills this range.",
+    };
+  if (dailyOrders <= 600)
+    return {
+      color: "text-emerald-300",
+      bg: "bg-emerald-400/10 border-emerald-300/30",
+      message: "Tier 2 — Regional Brand. One seller fills an entire hub.",
     };
   return {
-    color: "text-emerald-300",
-    bg: "bg-emerald-400/10 border-emerald-300/30",
-    message: "High volume hub. Consider expanding capacity.",
+    color: "text-yellow-400",
+    bg: "bg-yellow-400/10 border-yellow-400/30",
+    message: "Tier 2–3 territory. Consider multi-hub routing.",
   };
 }
 
@@ -57,14 +56,14 @@ function formatPeso(value: number): string {
 
 /* ── Milestone markers beneath the orders slider ── */
 const MILESTONES = [
-  { value: 120, label: "Break-even" },
-  { value: 200, label: "Profitable" },
-  { value: 300, label: "Sweet spot" },
-  { value: 500, label: "High vol." },
+  { value: 200, label: "Tier 1 min" },
+  { value: 300, label: "Tier 1/2" },
+  { value: 500, label: "Tier 2 mid" },
+  { value: 600, label: "Tier 2 max" },
 ];
 
 export default function HubCalculator() {
-  const [dailyOrders, setDailyOrders] = useState(200);
+  const [dailyOrders, setDailyOrders] = useState(300);
   const [operatingDays, setOperatingDays] = useState(26);
   const [showCostBreakdown, setShowCostBreakdown] = useState(false);
 
@@ -101,9 +100,9 @@ export default function HubCalculator() {
           </div>
           <input
             type="range"
-            min={50}
-            max={600}
-            step={10}
+            min={100}
+            max={800}
+            step={25}
             value={dailyOrders}
             onChange={(e) => setDailyOrders(Number(e.target.value))}
             className="hub-slider mt-3 w-full"
@@ -111,7 +110,7 @@ export default function HubCalculator() {
           {/* Milestone markers */}
           <div className="relative mt-1 h-5">
             {MILESTONES.map((m) => {
-              const pct = ((m.value - 50) / (600 - 50)) * 100;
+              const pct = ((m.value - 100) / (800 - 100)) * 100;
               return (
                 <span
                   key={m.value}
@@ -125,7 +124,7 @@ export default function HubCalculator() {
           </div>
           <div className="relative h-4">
             {MILESTONES.map((m) => {
-              const pct = ((m.value - 50) / (600 - 50)) * 100;
+              const pct = ((m.value - 100) / (800 - 100)) * 100;
               return (
                 <span
                   key={m.label}

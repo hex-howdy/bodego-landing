@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MapPin, Menu, X } from "lucide-react";
+import HubCalculator from "@/components/HubCalculator";
 
 /* ───────────────────────── Logo ───────────────────────── */
 function Logo({ dark = false }: { dark?: boolean }) {
@@ -112,33 +113,6 @@ function DashboardMockup() {
       <div className="mt-3 rounded-lg bg-navy/80 p-4">
         <p className="text-xs text-muted">Avg Delivery Time</p>
         <p className="font-mono text-2xl font-medium text-white">1.2 <span className="text-sm text-muted">days</span></p>
-      </div>
-    </div>
-  );
-}
-
-/* ──────────────────── Hub Revenue Visual ──────────────── */
-function HubRevenueVisual() {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-orange/20 bg-white p-8 shadow-lg">
-      <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-orange/10">
-        <MapPin className="h-10 w-10 text-orange" />
-      </div>
-      <p className="text-sm font-medium text-muted">Avg Hub Monthly Revenue</p>
-      <p className="font-mono text-4xl font-bold text-dark-navy">&#8369;85K<span className="text-lg text-muted">/mo</span></p>
-      <div className="mt-4 w-full space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-muted">Orders processed</span>
-          <span className="font-medium text-dark-navy">~4,500/mo</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-muted">Revenue per order</span>
-          <span className="font-medium text-dark-navy">~&#8369;19</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-muted">Space required</span>
-          <span className="font-medium text-dark-navy">40-150 sqm</span>
-        </div>
       </div>
     </div>
   );
@@ -480,8 +454,7 @@ export default function Home() {
 
       {/* ═══════════════════ SECTION 7: FOR HUB PARTNERS ═══════════════════ */}
       <section id="for-hubs" className="bg-warm-white px-6 py-24">
-        <div className="reveal mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
-          <HubRevenueVisual />
+        <div className="reveal mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-2">
           <div>
             <p className="text-sm font-semibold tracking-widest text-orange uppercase">For Hub Partners</p>
             <h2 className="mt-4 text-3xl font-black text-dark-navy md:text-4xl">
@@ -489,9 +462,9 @@ export default function Home() {
             </h2>
             <ul className="mt-8 space-y-4">
               {[
-                "BodeGO provides the tech, SOPs, and seller demand pipeline",
+                "BodeGO provides tech, SOPs, and seller demand pipeline",
                 "You provide the space, staff, and local presence",
-                "Revenue share on every order processed through your hub",
+                "₱7.20 per parcel processed — paid weekly",
                 "Zero upfront franchise fee in alpha phase",
                 "Seller contracts owned by BodeGO — you can\u2019t be undercut",
               ].map((b) => (
@@ -501,16 +474,11 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <a
-              href="#waitlist"
-              className="mt-8 inline-block rounded-full border-2 border-orange px-8 py-3.5 text-base font-semibold text-orange transition-colors hover:bg-orange hover:text-white"
-            >
-              Apply as Hub Partner &rarr;
-            </a>
-            <p className="mt-3 text-sm text-muted">
-              Ideal spaces: 40-150sqm commercial, loading access, Central Luzon.
+            <p className="mt-6 text-sm text-muted">
+              Ideal spaces: 40–150sqm commercial, loading dock access, Central Luzon.
             </p>
           </div>
+          <HubCalculator />
         </div>
       </section>
 

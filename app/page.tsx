@@ -18,67 +18,53 @@ function Logo({ dark = false }: { dark?: boolean }) {
   );
 }
 
-/* ──────────────────── Hub Network SVG ─────────────────── */
-function HubNetwork() {
-  const hubs = [
-    { x: 200, y: 120 },
-    { x: 420, y: 80 },
-    { x: 340, y: 260 },
-    { x: 140, y: 300 },
-    { x: 500, y: 220 },
-  ];
-  const buyers = [
-    { x: 100, y: 60 },
-    { x: 300, y: 40 },
-    { x: 520, y: 60 },
-    { x: 60, y: 200 },
-    { x: 580, y: 140 },
-    { x: 250, y: 340 },
-    { x: 460, y: 340 },
-    { x: 160, y: 180 },
-    { x: 400, y: 160 },
-    { x: 550, y: 300 },
-  ];
-
+/* ──────────────────── Hub Network Background ─────────────────── */
+function HubNetworkBg() {
   return (
-    <svg
-      viewBox="0 0 640 380"
-      className="mx-auto mt-12 w-full max-w-2xl opacity-60"
-      aria-hidden="true"
-    >
-      {/* Connection lines */}
-      {hubs.map((hub, hi) =>
-        buyers
-          .filter((b) => Math.hypot(b.x - hub.x, b.y - hub.y) < 220)
-          .map((b, bi) => (
-            <line
-              key={`l-${hi}-${bi}`}
-              x1={hub.x}
-              y1={hub.y}
-              x2={b.x}
-              y2={b.y}
-              stroke="white"
-              strokeOpacity={0.15}
-              strokeWidth={1}
-            />
-          ))
-      )}
-      {/* Buyer dots */}
-      {buyers.map((b, i) => (
-        <circle key={`b-${i}`} cx={b.x} cy={b.y} r={3} fill="white" fillOpacity={0.4} />
-      ))}
-      {/* Hub dots with pulse */}
-      {hubs.map((h, i) => (
-        <circle
-          key={`h-${i}`}
-          className="hub-dot"
-          cx={h.x}
-          cy={h.y}
-          r={7}
-          fill="#E8601C"
-        />
-      ))}
-    </svg>
+    <div className="hero-bg-layer">
+      <svg
+        viewBox="0 0 1200 700"
+        className="hub-bg-svg absolute inset-0 h-full w-full"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {/* Connection lines — very faint */}
+        {[
+          [180, 160, 400, 120], [400, 120, 650, 200], [650, 200, 850, 100],
+          [850, 100, 1050, 180], [180, 160, 300, 380], [400, 120, 520, 300],
+          [650, 200, 700, 420], [850, 100, 900, 320], [1050, 180, 1000, 400],
+          [300, 380, 520, 300], [520, 300, 700, 420], [700, 420, 900, 320],
+          [900, 320, 1000, 400], [180, 160, 80, 300], [1050, 180, 1150, 320],
+          [100, 500, 300, 380], [300, 380, 100, 500], [1000, 400, 1150, 520],
+        ].map(([x1, y1, x2, y2], i) => (
+          <line
+            key={i}
+            className="hub-line-bg"
+            x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="white"
+            strokeOpacity={0.07}
+            strokeWidth={1}
+          />
+        ))}
+
+        {/* Small buyer nodes — very faint white dots */}
+        {[
+          [80, 100], [260, 60], [480, 50], [720, 80], [950, 50], [1150, 120],
+          [60, 400], [180, 520], [420, 480], [600, 550], [800, 500], [1050, 540],
+          [1180, 420], [340, 200], [560, 380], [760, 280], [1000, 260],
+        ].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r={3} fill="white" fillOpacity={0.12} />
+        ))}
+
+        {/* Hub nodes — slightly brighter orange, still very subtle */}
+        {[
+          [180, 160], [400, 120], [650, 200], [850, 100], [1050, 180],
+          [300, 380], [520, 300], [700, 420], [900, 320], [1000, 400],
+        ].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r={5} fill="#E8601C" fillOpacity={0.25} />
+        ))}
+      </svg>
+    </div>
   );
 }
 
@@ -127,6 +113,12 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setNavScrolled(window.scrollY > 80);
+
+      // Parallax on hero bg
+      const heroBg = document.querySelector('.hub-bg-svg') as HTMLElement;
+      if (heroBg) {
+        heroBg.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -225,38 +217,40 @@ export default function Home() {
       </nav>
 
       {/* ═══════════════════ SECTION 1: HERO ═══════════════════ */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center bg-dark-navy px-6 pt-24 pb-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-5xl leading-tight font-black tracking-tight text-white md:text-7xl md:leading-tight">
-            Ship Same-Day.
-            <br />
-            From Anywhere.
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-            BodeGO is built for scaling Philippine sellers — ₱1M–3M/month and growing.
-            You&apos;re packing 100–600 orders a day. That&apos;s your problem. We solve it.
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <a
-              href="#waitlist"
-              className="w-full rounded-full bg-orange px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-orange-hover sm:w-auto"
-            >
-              Join the Waitlist
-            </a>
-            <a
-              href="#how-it-works"
-              className="w-full rounded-full border border-white/30 px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:border-white/60 sm:w-auto"
-            >
-              See How It Works
-            </a>
-          </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted">
-            <span>&#10003; Built for ₱1M+ sellers</span>
-            <span>&#10003; Pay per order fulfilled</span>
-            <span>&#10003; Launching Central Luzon 2026</span>
+      <section className="relative min-h-screen overflow-hidden bg-dark-navy px-6 pt-24 pb-16">
+        <HubNetworkBg />
+        <div className="relative z-10 flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="text-5xl leading-tight font-black tracking-tight text-white md:text-7xl md:leading-tight">
+              Ship Same-Day.
+              <br />
+              From Anywhere.
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
+              BodeGO is built for scaling Philippine sellers — ₱1M–3M/month and growing.
+              You&apos;re packing 100–600 orders a day. That&apos;s your problem. We solve it.
+            </p>
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <a
+                href="#waitlist"
+                className="w-full rounded-full bg-orange px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-orange-hover sm:w-auto"
+              >
+                Join the Waitlist
+              </a>
+              <a
+                href="#how-it-works"
+                className="w-full rounded-full border border-white/30 px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:border-white/60 sm:w-auto"
+              >
+                See How It Works
+              </a>
+            </div>
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted">
+              <span>&#10003; Built for ₱1M+ sellers</span>
+              <span>&#10003; Pay per order fulfilled</span>
+              <span>&#10003; Launching Central Luzon 2026</span>
+            </div>
           </div>
         </div>
-        <HubNetwork />
       </section>
 
       {/* ═══════════════════ SECTION 2: THE PROBLEM ═══════════════════ */}

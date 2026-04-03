@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin, Menu, X } from "lucide-react";
 import HubCalculator from "@/components/HubCalculator";
 
@@ -42,13 +42,12 @@ function HubNetworkBg() {
   }
 
   return (
-    <div className="hero-bg-layer">
-      <svg
-        viewBox="0 0 1200 700"
-        className="hub-bg-svg absolute inset-0 h-full w-full"
-        preserveAspectRatio="xMidYMid slice"
-        aria-hidden="true"
-      >
+    <svg
+      viewBox="0 0 1200 700"
+      className="hub-bg-svg absolute inset-0 h-full w-full"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
         {/* Connection lines — very faint */}
         {lines.map(([x1, y1, x2, y2], i) => (
           <line
@@ -71,7 +70,6 @@ function HubNetworkBg() {
           <circle key={i} cx={cx} cy={cy} r={4} fill="#E8601C" fillOpacity={0.45} />
         ))}
       </svg>
-    </div>
   );
 }
 
@@ -115,6 +113,50 @@ function DashboardMockup() {
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
+
+  const heroRef = useRef<HTMLElement>(null);
+  const bgLayerRef = useRef<HTMLDivElement>(null);
+  const midLayerRef = useRef<HTMLDivElement>(null);
+  const frontLayerRef = useRef<HTMLDivElement>(null);
+
+  /* ── Mouse-driven 3D parallax on hero ── */
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    // Skip on touch devices
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      if (bgLayerRef.current) {
+        bgLayerRef.current.style.transform = `translate(${x * -18}px, ${y * -12}px)`;
+      }
+      if (midLayerRef.current) {
+        midLayerRef.current.style.transform = `translate(${x * 10}px, ${y * 7}px)`;
+      }
+      if (frontLayerRef.current) {
+        frontLayerRef.current.style.transform = `translate(${x * 18}px, ${y * 12}px) rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
+        frontLayerRef.current.style.transformStyle = 'preserve-3d';
+      }
+    };
+
+    const handleMouseLeave = () => {
+      if (bgLayerRef.current) bgLayerRef.current.style.transform = 'translate(0px, 0px)';
+      if (midLayerRef.current) midLayerRef.current.style.transform = 'translate(0px, 0px)';
+      if (frontLayerRef.current) frontLayerRef.current.style.transform = 'translate(0px, 0px) rotateX(0deg) rotateY(0deg)';
+    };
+
+    hero.addEventListener('mousemove', handleMouseMove);
+    hero.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      hero.removeEventListener('mousemove', handleMouseMove);
+      hero.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
 
   /* ── Scroll: nav bg + section reveals ── */
   useEffect(() => {
@@ -224,37 +266,48 @@ export default function Home() {
       </nav>
 
       {/* ═══════════════════ SECTION 1: HERO ═══════════════════ */}
-      <section className="relative min-h-screen overflow-hidden bg-dark-navy px-6 pt-24 pb-16">
-        <HubNetworkBg />
+      <section ref={heroRef} className="relative min-h-screen overflow-hidden bg-dark-navy px-6 pt-24 pb-16">
+        {/* Layer 1: Background network — moves opposite, slowest */}
+        <div ref={bgLayerRef} className="parallax-layer hero-bg-layer">
+          <HubNetworkBg />
+        </div>
+
         <div className="relative z-10 flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-5xl leading-tight font-black tracking-tight text-white md:text-7xl md:leading-tight">
-              Ship Same-Day.
-              <br />
-              From Anywhere.
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-              BodeGO is built for scaling Philippine sellers — ₱1M–3M/month and growing.
-              You&apos;re packing 100–600 orders a day. That&apos;s your problem. We solve it.
-            </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a
-                href="#waitlist"
-                className="w-full rounded-full bg-orange px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-orange-hover sm:w-auto"
-              >
-                Join the Waitlist
-              </a>
-              <a
-                href="#how-it-works"
-                className="w-full rounded-full border border-white/30 px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:border-white/60 sm:w-auto"
-              >
-                See How It Works
-              </a>
+            {/* Layer 3: Headline + CTAs — moves most, creates depth */}
+            <div ref={frontLayerRef} className="parallax-layer" style={{ perspective: '1000px' }}>
+              <h1 className="text-5xl leading-tight font-black tracking-tight text-white md:text-7xl md:leading-tight">
+                Ship Same-Day.
+                <br />
+                From Anywhere.
+              </h1>
+              <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                <a
+                  href="#waitlist"
+                  className="w-full rounded-full bg-orange px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-orange-hover sm:w-auto"
+                >
+                  Join the Waitlist
+                </a>
+                <a
+                  href="#how-it-works"
+                  className="w-full rounded-full border border-white/30 px-8 py-4 text-center text-lg font-semibold text-white transition-colors hover:border-white/60 sm:w-auto"
+                >
+                  See How It Works
+                </a>
+              </div>
             </div>
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted">
-              <span>&#10003; Built for ₱1M+ sellers</span>
-              <span>&#10003; Pay per order fulfilled</span>
-              <span>&#10003; Launching Central Luzon 2026</span>
+
+            {/* Layer 2: Sub-text — mid speed */}
+            <div ref={midLayerRef} className="parallax-layer">
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
+                BodeGO is built for scaling Philippine sellers — ₱1M–3M/month and growing.
+                You&apos;re packing 100–600 orders a day. That&apos;s your problem. We solve it.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted">
+                <span>&#10003; Built for ₱1M+ sellers</span>
+                <span>&#10003; Pay per order fulfilled</span>
+                <span>&#10003; Launching Central Luzon 2026</span>
+              </div>
             </div>
           </div>
         </div>

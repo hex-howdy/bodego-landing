@@ -51,6 +51,12 @@ html {
   animation: line-fade 10s ease-in-out infinite;
 }
 
+/* Mouse-driven parallax layers */
+.parallax-layer {
+  transition: transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
 /* Parallax hero background */
 .hero-bg-layer {
   position: absolute;

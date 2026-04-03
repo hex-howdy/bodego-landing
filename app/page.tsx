@@ -430,7 +430,8 @@ export default function Home() {
                 "Ship same-day from Central Luzon to Manila buyers",
                 "Rank higher on TikTok Shop and Shopee — platforms reward fast shippers",
                 "Never stockout mid-sale — AI reorder alerts before you run dry",
-                "No monthly subscription — pay ₱12/parcel fulfilled",
+                "No monthly subscription — pay per parcel fulfilled",
+                "Alpha pricing for pilot sellers — locked in before public launch",
                 "One Tier 2 seller (450 orders/day) fills an entire hub",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-3">
@@ -465,7 +466,7 @@ export default function Home() {
               {[
                 "BodeGO provides tech, SOPs, and seller demand pipeline",
                 "You provide the space, staff, and local presence",
-                "₱7.20 per parcel processed — paid weekly",
+                "Revenue share per parcel processed — paid weekly",
                 "Zero upfront franchise fee in alpha phase",
                 "Seller contracts owned by BodeGO — you can\u2019t be undercut",
               ].map((b) => (

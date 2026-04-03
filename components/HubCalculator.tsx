@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /* ── Constants ── */
-const REVENUE_PER_PARCEL = 7.2;
+const REVENUE_PER_PARCEL = 8;
 const FIXED_COSTS = 56_000;
 const COST_BREAKDOWN = [
   { label: "Space rent", amount: 15_000 },
@@ -177,7 +177,7 @@ export default function HubCalculator() {
             {formatPeso(grossRevenue)}
           </p>
           <p className="mt-0.5 text-[10px] text-[#A0A8B8]">
-            ₱7.20/parcel &middot; 60% revenue share
+            Est. ₱8/parcel &middot; revenue share (alpha rate)
           </p>
         </div>
 
@@ -252,10 +252,9 @@ export default function HubCalculator() {
 
       {/* ── Footnote ── */}
       <p className="mt-6 text-[10px] leading-relaxed text-[#A0A8B8]/60">
-        Revenue share % subject to alpha partner agreements. Fixed costs are
-        estimates — your actual costs depend on your space, location, and
-        staffing. Hub income is pre-tax. BodeGO provides the tech, SOPs, and
-        seller demand. You provide the space and operations.
+        Hub revenue share is subject to alpha partner agreements and will be
+        confirmed before launch. Fixed costs are estimates based on Central
+        Luzon market rates. All figures are pre-tax projections.
       </p>
 
       {/* CTA */}
